@@ -1,4 +1,5 @@
 import React, {Fragment,useState} from "react";
+import Proptypes from 'prop-types';
 import uuid from 'uuid/dist/v4'
 
 const Formulario = ({agregarTurno}) =>{
@@ -41,7 +42,6 @@ const Formulario = ({agregarTurno}) =>{
 
         // Asignar ID
         turno.id = uuid();
-        console.log(turno);
 
         // Crear turno
         agregarTurno(turno);
@@ -102,6 +102,11 @@ const Formulario = ({agregarTurno}) =>{
             </form>
         </Fragment>
     )
+}
+
+
+Formulario.propTypes = {
+     agregarTurno: Proptypes.func.isRequired
 }
 
 export default Formulario;

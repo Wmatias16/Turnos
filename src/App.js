@@ -1,16 +1,30 @@
-import React,{Fragment,useState} from "react";
+import React,{Fragment,useState, useEffect} from "react";
 
 import Formulario from "./components/Formulario";
 import Turno from "./components/Turno";
 
 function App() {
 
-  // Array de turnos
-  const [turnos,guardarTurnos] = useState([]);
 
+  // Turnos en local storage
+  let turnosIniciales = JSON.parse(localStorage.getItem('Turnos')); 
+
+  if(!turnosIniciales){
+      turnosIniciales = [];
+  }
+
+  // Array de turnos
+  const [turnos,guardarTurnos] = useState(turnosIniciales);
+
+  useEffect(()=>{
+    if(turnosIniciales){
+      localStorage.setItem('Turnos',JSON.stringify(turnos));
+    }else{
+      localStorage.setItem('Turnos',JSON.stringify([]));
+    }
+  }, [ turnos, turnosIniciales ] );
 
   // Agregar turnos
-
   const agregarTurno = turno =>{
     guardarTurnos([
       ...turnos,
@@ -25,6 +39,8 @@ function App() {
   }
 
 
+  const titulo = turnos.length === 0 ? 'No hay turnos': 'Administrar turnos';
+
   return (
     <Fragment>
         <h1>Administrador de turnos</h1>
@@ -37,7 +53,7 @@ function App() {
                 />
               </div>
               <div className="one-half column">
-                <h2>Turnos agendados</h2>
+                <h2>{titulo}</h2>
                 {turnos.map(turno =>(
                   <Turno
                     key={turno.id} 
